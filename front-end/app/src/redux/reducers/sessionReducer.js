@@ -12,6 +12,10 @@ export default function sessionReducer(state = [], action) {
       );
     case types.LOAD_SESSIONS_SUCCESS:
       return action.sessions;
+    case types.DELETE_SESSION_OPTIMISCTIC:
+      return state.filter(
+        (session) => session.session_id !== action.session.session_id
+      );
     default:
       return state;
   }

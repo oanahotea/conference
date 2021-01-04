@@ -13,6 +13,10 @@ export function updateSessionSuccess(session) {
   return { type: types.UPDATE_SESSION_SUCCESS, session };
 }
 
+export function deleteSessionOptimistic(session) {
+  return { type: types.DELETE_SESSION_OPTIMISCTIC, session };
+}
+
 export function loadSessions() {
   return function (dispatch) {
     return sessionApi
@@ -27,7 +31,6 @@ export function loadSessions() {
 }
 
 export function saveSession(session) {
-  console.log(session.session_id + " Din save action session");
   return function (dispatch) {
     return sessionApi
       .saveSession(session)
@@ -39,5 +42,14 @@ export function saveSession(session) {
       .catch((error) => {
         throw error;
       });
+  };
+}
+
+export function deleteSession(session) {
+  return function (dispatch) {
+    // Doing optimistic delete, so not dispatching begin/end api call
+    // actions, or apiCallError action since we're not showing the loading status for this.
+    dispatch(deleteSessionOptimistic(session));
+    return sessionApi.deleteSession(session.session_id);
   };
 }

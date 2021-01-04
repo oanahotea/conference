@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import SessionList from "./SessionList";
 import { Redirect } from "react-router-dom";
-import { deleteSession } from "../../api/sessionApi";
 
 class SessionPage extends Component {
   state = {
@@ -13,7 +12,7 @@ class SessionPage extends Component {
   };
 
   componentDidMount() {
-    const { session, sessions, actions } = this.props;
+    const { sessions, actions } = this.props;
 
     if (sessions.length === 0) {
       actions.loadSessions().catch((error) => {
@@ -21,6 +20,16 @@ class SessionPage extends Component {
       });
     }
   }
+
+  handleDeleteSession = async (session) => {
+    debugger;
+    console.log("Course deleted");
+    try {
+      await this.props.actions.deleteSession(session);
+    } catch (error) {
+      console.log("Delete failed. " + error.message);
+    }
+  };
 
   render() {
     return (
@@ -34,8 +43,8 @@ class SessionPage extends Component {
           Add a session
         </button>
         <SessionList
+          onDeleteClick={this.handleDeleteSession}
           sessions={this.props.sessions}
-          onDelete={this.handleClick}
         />
       </>
     );
@@ -45,6 +54,7 @@ class SessionPage extends Component {
 SessionPage.propTypes = {
   sessions: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
+  handleDeleteSession: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -57,6 +67,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       loadSessions: bindActionCreators(sessionAction.loadSessions, dispatch),
+      deleteSession: bindActionCreators(sessionAction.deleteSession, dispatch),
     },
   };
 }

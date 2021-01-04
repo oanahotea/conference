@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const SessionList = (props) => {
-  const { sessions, onDelete } = props;
+  const { sessions, onDeleteClick } = props;
   return (
     <table className="table">
       <thead>
@@ -12,6 +12,7 @@ const SessionList = (props) => {
           <th>Description</th>
           <th>Speaker</th>
           <th>Duration</th>
+          <th />
         </tr>
       </thead>
       <tbody>
@@ -30,9 +31,12 @@ const SessionList = (props) => {
                 </Link>
               </td>
               <td>
-                <a className="btn btn-danger" onClick={onDelete}>
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() => onDeleteClick(session)}
+                >
                   Delete
-                </a>
+                </button>
               </td>
             </tr>
           );
@@ -44,7 +48,7 @@ const SessionList = (props) => {
 
 SessionList.propTypes = {
   sessions: PropTypes.array.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };
 
 export default SessionList;

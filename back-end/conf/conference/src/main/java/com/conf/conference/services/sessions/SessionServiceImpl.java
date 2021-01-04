@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Oana Hotea on 12/28/2020.
@@ -27,7 +28,12 @@ public class SessionServiceImpl implements SessionService {
      */
     @Override
     public List listAll() {
-        return sessionRepository.findAll();
+
+        return sessionRepository.findAll().stream().filter(session -> {
+              Boolean sessionDeleted =  session.getDeleted();
+              if(sessionDeleted == null) return true;
+              return !session.getDeleted();
+        }).collect(Collectors.toList());
     }
 
     /**
