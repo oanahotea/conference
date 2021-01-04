@@ -27,6 +27,7 @@ export function loadSessions() {
 }
 
 export function saveSession(session) {
+  console.log(session.session_id + " Din save action session");
   return function (dispatch) {
     return sessionApi
       .saveSession(session)

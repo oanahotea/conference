@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import SessionList from "./SessionList";
 import { Redirect } from "react-router-dom";
+import { deleteSession } from "../../api/sessionApi";
 
 class SessionPage extends Component {
   state = {
@@ -12,7 +13,7 @@ class SessionPage extends Component {
   };
 
   componentDidMount() {
-    const { sessions, actions } = this.props;
+    const { session, sessions, actions } = this.props;
 
     if (sessions.length === 0) {
       actions.loadSessions().catch((error) => {
@@ -22,11 +23,9 @@ class SessionPage extends Component {
   }
 
   render() {
-    console.log(this.props.sessions);
     return (
       <>
         {this.state.redirectToAddSessionPage && <Redirect to="/session" />}
-        <h2>sessions</h2>
         <button
           style={{ marginBottom: 20 }}
           className="btn btn-primary add-session"
@@ -34,7 +33,10 @@ class SessionPage extends Component {
         >
           Add a session
         </button>
-        <SessionList sessions={this.props.sessions} />
+        <SessionList
+          sessions={this.props.sessions}
+          onDelete={this.handleClick}
+        />
       </>
     );
   }

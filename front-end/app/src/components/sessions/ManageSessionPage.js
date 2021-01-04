@@ -12,12 +12,9 @@ function ManageSessionPage({
   loadSpeakers,
   saveSession,
   history,
+  ...props
 }) {
-  const [session, setSession] = useState({
-    session_length: 0,
-    session_description: "",
-    speaker: {},
-  });
+  const [session, setSession] = useState({ ...props.session });
   const [erros, setErros] = useState({});
 
   useEffect(() => {
@@ -25,6 +22,8 @@ function ManageSessionPage({
       loadSessions().catch((error) => {
         alert("Loading sessions failed" + error);
       });
+    } else {
+      setSession({ ...props.session });
     }
 
     if (speakers.length === 0) {
@@ -32,16 +31,14 @@ function ManageSessionPage({
         alert("Loading speakers failed" + error);
       });
     }
-  });
+  }, [props.session]);
 
   function getSpeakerById(id) {
-    debugger;
     let filterSpeakers = speakers.filter((speaker) => speaker.speaker_id == id);
     return filterSpeakers[0];
   }
 
   function handleChange(event) {
-    debugger;
     //this avoid the event getting garbage collected
     const { name, value } = event.target;
     setSession((prevsession) => ({
@@ -51,8 +48,6 @@ function ManageSessionPage({
   }
 
   function handleSave(event) {
-    console.log("handleSave");
-    console.log(session.session_id);
     event.preventDefault();
     saveSession(session).then(() => {
       history.push("/sessions");
@@ -82,9 +77,21 @@ ManageSessionPage.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
+function getSessionById(sessions, session_id) {
+  console.log(session_id + " Session Id!!!");
+  return sessions.find((session) => session.session_id == session_id) || null;
+}
+
+function mapStateToProps(state, ownProps) {
+  const session_id = ownProps.match.params.session_id;
+  console.log(session_id);
+  const session =
+    session_id && state.sessions.length > 0
+      ? getSessionById(state.sessions, session_id)
+      : { session_length: 0, session_description: "", speaker: {} };
+  console.log(session.session_id + " Session Id!!!");
   return {
-    // session: newSession,
+    session,
     sessions: state.sessions,
     speakers: state.speakers,
   };

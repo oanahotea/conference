@@ -7,6 +7,7 @@ import PageNotFound from "./PageNotFound";
 import SessionPage from "./sessions/SessionPage";
 import ManageSessionPage from "./sessions/ManageSessionPage";
 import SpeakerPage from "./speakers/SpeakerPage";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/sessions" component={SessionPage} />
+        <Route path="/session/:session_id" component={ManageSessionPage} />
         <Route path="/session" component={ManageSessionPage} />
         <Route path="/speakers" component={SpeakerPage} />
         <Route component={PageNotFound} />

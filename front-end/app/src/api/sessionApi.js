@@ -6,7 +6,7 @@ export function getSessions() {
 }
 
 export function saveSession(session) {
-  console.log(JSON.stringify(session) + "json!!!!");
+  console.log(session.session_id + " Din save session");
   return fetch(baseUrl + (session.session_id || ""), {
     method: session.session_id ? "PUT" : "POST", // POST for create, PUT to update when id already exists.
     headers: {
@@ -23,9 +23,6 @@ export function deleteSession(session_id) {
     method: "DELETE",
     headers: {
       "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
     },
   })
     .then(handleResponse)

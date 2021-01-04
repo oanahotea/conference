@@ -38,7 +38,7 @@ const SessionForm = ({
       <SelectInput
         name="speaker"
         label="Speaker"
-        value={session.speaker}
+        value={session.first_name}
         defaultOption="Select speaker"
         options={speakers.map((speaker) => ({
           value: speaker.speaker_id,
